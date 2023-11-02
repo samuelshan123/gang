@@ -1,14 +1,25 @@
 
-class GangsModel {}
-GangsModel.schema = {
-  name: 'GangList',
-  primaryKey: 'id',
+// Define your Gang schema
+export const GangSchema = {
+  name: 'Gang',
   properties: {
-    id: 'int',
-    gang: 'string',
-    epoch:'int'
-   
+    gang_name: 'string',
+    description: 'string',
+    phone: 'string',
+    name: 'string',
+    gang_id: 'string',
+    epoch: 'int',
+    members: 'Member[]',
+    created_by: 'string',
   },
+  primaryKey: 'gang_id',
 };
 
-export default GangsModel;
+export const MemberSchema = {
+  name: 'Member',
+  properties: {
+    name: 'string',
+    phone: 'string',
+    role: 'string',
+  },
+};

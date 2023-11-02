@@ -8,7 +8,7 @@ import {postData} from '../../utils/api/api';
 import {showToast} from '../ui/Toast';
 import { useNavigation } from '@react-navigation/native';
 
-function JoinGangForm({phone}) {
+function JoinGangForm({user}) {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -17,7 +17,8 @@ function JoinGangForm({phone}) {
     setLoading(true);
     try {
       const payload ={
-        phone,
+        phone:user.phone,
+        name:user.name,
         gang_id:text
       }
       const response = await postData('gang/join', payload);
@@ -29,6 +30,7 @@ function JoinGangForm({phone}) {
       }
       navigation.navigate('Home');
     } catch (err) {
+      setLoading(false);
       console.error('Error posting data:', err.message);
       showToast('error', 'Oops!', err.message);
     }

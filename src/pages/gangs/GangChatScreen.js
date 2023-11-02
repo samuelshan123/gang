@@ -10,10 +10,8 @@ import io from 'socket.io-client';
 import { SOCKET_URL } from '../../utils/constants/constants';
 import { showToast } from '../../components/ui/Toast';
 import Realm from 'realm';
-import { GangMessageSchema } from '../../utils/models/gangMessages';
-
+import { realm } from '../../utils/models/relamConfig';
 // Initialize Realm outside of the component
-const realmInstance = new Realm({ schema: [GangMessageSchema] });
 
 const GangChatScreen = ({ route, navigation }) => {
   const gangId = route.params.gang_id;
@@ -30,7 +28,7 @@ const GangChatScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     // Load messages from the Realm database
-    const storedMessages = realmInstance
+    const storedMessages = realm
       .objects('GangMessage')
       .filtered(`gangId == "${gangId}"`);
     setMessages([...storedMessages]);
@@ -126,8 +124,8 @@ const GangChatScreen = ({ route, navigation }) => {
 
   function storeMessageToRealm(data) {
     try {
-      realmInstance.write(() => {
-        realmInstance.create('GangMessage', data, Realm.UpdateMode.Modified);
+      realm.write(() => {
+        realm.create('GangMessage', data, Realm.UpdateMode.Modified);
       });
     } catch (error) {
       console.error('Error storing message to Realm:', error);
