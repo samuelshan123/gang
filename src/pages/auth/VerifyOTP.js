@@ -41,6 +41,7 @@ function VerifyOTP({route}) {
         }
         if (response.status !== 200) {
         showToast('error', 'Oops!', response.info);
+        return;
         }
       dispatch(loginUser(response.user));
       navigation.navigate('Home');

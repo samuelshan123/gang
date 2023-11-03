@@ -89,7 +89,9 @@ const Gangs = () => {
             label: 'Create',
             labelStyle: { fontFamily: fonts.primary },
             style: { backgroundColor: colors.primary_color },
-            onPress: () => { return navigation.navigate('Create Gang') },
+            onPress: () =>  navigation.navigate('Create Gang',{
+              user
+            }),
           },
           {
             icon: 'account-group',

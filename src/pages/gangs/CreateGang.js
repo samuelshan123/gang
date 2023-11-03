@@ -1,9 +1,10 @@
 import CreateGangForm from "../../components/gang/CreateGangForm";
 
 
-function CreateGang(){
+function CreateGang({route}){
      return(
-        <CreateGangForm/>
+        <CreateGangForm user = {route.params.user}
+        />
      )
 }
 

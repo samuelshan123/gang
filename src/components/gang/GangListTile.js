@@ -19,7 +19,7 @@ const GangListTile = ({item}) => {
           <View style={styles.textContainer}>
             <View style={styles.headerContainer}>
               <Text style={styles.gang}>{item.gang_name}</Text>
-              <Text style={styles.date}>{'today'}</Text>
+              {/* <Text style={styles.date}>{'today'}</Text> */}
             </View>
             <Text style={styles.message}>{item.description}</Text>
           </View>

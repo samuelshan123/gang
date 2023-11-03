@@ -1,21 +1,54 @@
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import { Button, ActivityIndicator, TextInput} from 'react-native-paper';
-
 import { colors } from '../../theme/colors';
 import { useState } from 'react';
 import { fonts } from '../../theme/fonts';
+import { postData } from '../../utils/api/api';
+import { showToast } from '../ui/Toast';
+import { realm } from '../../utils/models/relamConfig';
+import Realm from "realm";
+import { useNavigation } from '@react-navigation/native';
 
 
-function CreateGangForm(){
+function CreateGangForm({user}){
+  const navigation = useNavigation();
     const [text, setText] = useState('');
+    const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
-    const handlePress = () => {
-        setLoading(true);
-        // Simulate some async operation
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000); // remove this if you don't want to simulate a delay
-      };
+    const handlePress = async () => {
+      setLoading(true);
+      try {
+        const payload ={
+          phone:user.phone,
+          name:user.name,
+          gang_name:text,
+          description:description
+        }
+        const response = await postData('gang/create', payload);
+        setLoading(false);
+        console.log('Post Response:', response);
+        if (response.status !== 200) {
+          showToast('error', 'Oops!', response.info);
+          return;
+        }
+        storeMessageToRealm(response.gang);
+        navigation.navigate('Home');
+      } catch (err) {
+        setLoading(false);
+        console.error('Error posting data:', err.message);
+        showToast('error', 'Oops!', err.message);
+      }
+    };
+
+    function storeMessageToRealm(data) {
+      try {
+        realm.write(() => {
+          realm.create('Gang', data, Realm.UpdateMode.Modified);
+        });
+      } catch (error) {
+        console.error('Error storing message to Realm:', error);
+      }
+    }
     
   return (
     // <PaperProvider theme={theme}>
@@ -29,8 +62,8 @@ function CreateGangForm(){
           />
              <TextInput
           label="Description"
-          value={text}
-          onChangeText={setText}
+          value={description}
+          onChangeText={setDescription}
           mode="outlined"
           multiline={true}
           numberOfLines={3}
@@ -67,10 +100,10 @@ const styles = StyleSheet.create({
     textInput: {
       // height: 50,
       backgroundColor:'transparent',
-      marginHorizontal:10,
       marginVertical:5
     },
     button:{
         marginTop:20,
+        borderRadius:8
     }
   });

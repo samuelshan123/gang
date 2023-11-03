@@ -11,7 +11,6 @@ import { SOCKET_URL } from '../../utils/constants/constants';
 import { showToast } from '../../components/ui/Toast';
 import Realm from 'realm';
 import { realm } from '../../utils/models/relamConfig';
-// Initialize Realm outside of the component
 
 const GangChatScreen = ({ route, navigation }) => {
   const gangId = route.params.gang_id;
@@ -154,5 +153,3 @@ const styles = StyleSheet.create({
 });
 
 export default GangChatScreen;
-
-// Remember to close the Realm instance when the app is closing or when it's no longer needed

@@ -88,10 +88,10 @@ const styles = StyleSheet.create({
   textInput: {
     // height: 50,
     backgroundColor: 'transparent',
-    marginHorizontal: 10,
     marginVertical: 5,
   },
   button: {
     marginTop: 20,
+    borderRadius:8
   },
 });
