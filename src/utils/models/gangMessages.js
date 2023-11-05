@@ -12,3 +12,13 @@ export const GangMessageSchema = {
     },
   };
   
+
+  export const GangMessageLastUpdatedSchema = {
+    name: 'GangMessageLastUpdated',
+    primaryKey: 'gang_id',
+    properties: {
+      gang_id: 'string',
+      epoch: 'int',
+    },
+  };
+  

@@ -11,6 +11,7 @@ export const GangSchema = {
     epoch: 'int',
     members: 'Member[]',
     created_by: 'string',
+    unread_count:'int'
   },
   primaryKey: 'gang_id',
 };
