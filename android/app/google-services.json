@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540503131789",
+    "project_id": "gang-e626e",
+    "storage_bucket": "gang-e626e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540503131789:android:7dac8f813df62646c1c4c4",
+        "android_client_info": {
+          "package_name": "com.gang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7qBz7V8cf0AZmvMBgoC2uHJuAzUFNDWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,6 +9,8 @@ import CreateGang from './src/pages/gangs/CreateGang';
 import VerifyOTP from './src/pages/auth/VerifyOTP';
 import CreateProfile from './src/pages/auth/CreateProfile';
 import JoinGang from "./src/pages/gangs/JoinGang";
+import { View, TouchableOpacity } from "react-native";
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Use your preferred icon set
 
 const Stack = createStackNavigator();
 
@@ -61,7 +63,27 @@ export function AppNavigator(): JSX.Element {
           options={{
             // headerShown: false,
             title: 'Gang Chats',
-            headerBackTitleVisible: false
+            headerBackTitleVisible: false,
+            headerRight: () => (
+              <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity
+                      onPress={() => {
+                          // Do something when search is pressed
+                      }}
+                      style={{ marginRight: 15 }}
+                  >
+                      <Icon name="search" size={25} color="#fff" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                      onPress={() => {
+                          // Do something when more icon is pressed
+                      }}
+                      style={{ marginRight: 10 }}
+                  >
+                      <Icon name="more-vert" size={25} color="#fff" />
+                  </TouchableOpacity>
+              </View>
+          ),
           }}
           name="Home"
           component={GangBottomNavigation}

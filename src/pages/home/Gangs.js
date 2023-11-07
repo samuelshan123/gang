@@ -11,6 +11,7 @@ import { setGangs } from '../../utils/redux/actions/gangActions';
 import { realm } from '../../utils/models/relamConfig';
 import { fetchData, postData } from '../../utils/api/api';
 import Realm from "realm";
+import {requestUserPermission,NotificationListener} from '../../utils/push-notification/notification-helper'
 
 const Gangs = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,11 @@ const Gangs = () => {
     const lastUpdates = realm.objects('GangMessageLastUpdated');
     return lastUpdates.map(lu => ({ gang_id: lu.gang_id, epoch: lu.epoch }));
   };
+
+  useEffect(()=>{
+    requestUserPermission();
+    NotificationListener
+  },[])
 
   useEffect(() => {
     const gangs = fetchGangsFromRealm();
