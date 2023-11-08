@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -55,6 +56,11 @@ export const NotificationListener =()=>{
 
     messaging().onMessage(async(remoteMessage)=>{
        console.log("Notification on foreground",remoteMessage);
+       PushNotification.localNotification({
+        channelId: "gang-123", // (required)
+        title: remoteMessage.notification.title,
+        message: remoteMessage.notification.body,
+      });
     })
     
 }
