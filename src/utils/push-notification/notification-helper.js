@@ -9,16 +9,16 @@ export async function requestUserPermission() {
 
   if (enabled) {
     console.log('Authorization status:', authStatus);
+    GetFcmToken();
   }
 }
 
 
-export function GetFcmToken(){
-    
-    let fcmToken = AsyncStorage.getItem("fcmtoken");
+export async function GetFcmToken(){
+    let fcmToken = await AsyncStorage.getItem("fcmtoken");
     if(!fcmToken){
         try {
-             const token = messaging().getToken();
+             const token = await messaging().getToken();
              if(token){
                 console.log("fcmToken",token);
                 AsyncStorage.setItem("fcmtoken",token);
@@ -26,6 +26,9 @@ export function GetFcmToken(){
         } catch (error) {
             console.error(error);
         }
+    }
+    else{
+      console.log("Existing FCM token:", fcmToken);
     }
 }
 
@@ -53,4 +56,5 @@ export const NotificationListener =()=>{
     messaging().onMessage(async(remoteMessage)=>{
        console.log("Notification on foreground",remoteMessage);
     })
+    
 }

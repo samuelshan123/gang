@@ -31,10 +31,10 @@ const Gangs = () => {
     const lastUpdates = realm.objects('GangMessageLastUpdated');
     return lastUpdates.map(lu => ({ gang_id: lu.gang_id, epoch: lu.epoch }));
   };
-
+  
   useEffect(()=>{
     requestUserPermission();
-    NotificationListener
+    NotificationListener();
   },[])
 
   useEffect(() => {
