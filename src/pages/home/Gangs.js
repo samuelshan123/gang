@@ -7,11 +7,12 @@ import { fonts } from '../../theme/fonts';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '../../components/ui/Toast';
-import { setGangs } from '../../utils/redux/actions/gangActions';
-import { realm } from '../../utils/models/relamConfig';
+import { setGangs, setMessages } from '../../utils/redux/actions/gangActions';
+import { realm } from '../../utils/realm/models/relamConfig';
 import { fetchData, postData } from '../../utils/api/api';
 import Realm from "realm";
 import {requestUserPermission,NotificationListener} from '../../utils/push-notification/notification-helper'
+import socketService from '../../utils/service/socketService';
 
 const Gangs = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,21 @@ const Gangs = () => {
     requestUserPermission();
     NotificationListener();
   },[])
+
+    useEffect(() => {
+      // Set up global Socket.io event listeners
+      // Example: Handling global notifications
+      socketService.on('global_notification', (notification) => {
+        // Process the notification
+        console.log(notification);
+      });
+  
+      return () => {
+        // Cleanup global listeners when the component unmounts
+        socketService.off('global_notification');
+      };
+    }, []);
+  
 
   useEffect(() => {
     const gangs = fetchGangsFromRealm();
@@ -86,7 +102,7 @@ const Gangs = () => {
               realm.write(() => {
                 messagesResponse.messages.forEach(message => {
                   realm.create('GangMessage', message, Realm.UpdateMode.Modified);
-
+                  dispatch(setMessages(message.gangId, message));
                     // Find the corresponding gang and increment the unread count
                     let gang = realm.objectForPrimaryKey('Gang', message.gangId);
                     if (gang) {

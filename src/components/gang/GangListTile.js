@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar, Badge } from 'react-native-paper';
 import { fonts } from '../../theme/fonts';
-import { realm } from '../../utils/models/relamConfig';
+import { realm } from '../../utils/realm/models/relamConfig';
 import { colors } from '../../theme/colors';
 
 const GangListTile = ({ item }) => {

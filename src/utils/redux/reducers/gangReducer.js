@@ -1,9 +1,9 @@
-const { SET_GANGS, FETCH_GANG } = require("../actions/gangActions");
-
+const { SET_GANGS, FETCH_GANG, SET_MESSAGES, ADD_MESSAGE } = require("../actions/gangActions");
 
 const initialState = {
     gangs: [],
     fetchedGang: null,
+    messages: {}, // Object to store messages for each gang
 };
 
 const gangReducer = (state = initialState, action) => {
@@ -17,6 +17,25 @@ const gangReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetchedGang: action.payload,
+            };
+        case SET_MESSAGES:
+            return {
+                ...state,
+                messages: {
+                    ...state.messages,
+                    [action.payload.gangId]: action.payload.messages,
+                },
+            };
+        case ADD_MESSAGE:
+            return {
+                ...state,
+                messages: {
+                    ...state.messages,
+                    [action.payload.gangId]: [
+                        ...(state.messages[action.payload.gangId] || []),
+                        action.payload.message,
+                    ],
+                },
             };
         default:
             return state;

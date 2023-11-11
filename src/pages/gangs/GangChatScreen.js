@@ -6,21 +6,19 @@ import { colors } from '../../theme/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import ChatPageHeaderTitle from '../../components/gang/ChatPage/ChatPageHeaderTitle';
 import ChatPageHeaderRight from '../../components/gang/ChatPage/ChatPageHeaderRight';
-import io from 'socket.io-client';
-import { SOCKET_URL } from '../../utils/constants/constants';
-import { showToast } from '../../components/ui/Toast';
 import Realm from 'realm';
-import { realm } from '../../utils/models/relamConfig';
+import { realm } from '../../utils/realm/models/relamConfig';
+import socketService from '../../utils/service/socketService';
 
 const GangChatScreen = ({ route, navigation }) => {
   const gangId = route.params.gang_id;
   const user = useSelector(state => state.auth.user);
   const [gang, setGang] = useState(null);
-  const [socket, setSocket] = useState(null);
   const gangs = useSelector(state => state.gangs.gangs);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    console.log(gangs);
     const fetchedGang = gangs.find(g => g.gang_id === gangId);
     setGang(fetchedGang);
   }, [gangId, gangs]);
@@ -43,82 +41,50 @@ const GangChatScreen = ({ route, navigation }) => {
     };
   }, [gangId]);
 
+
   useEffect(() => {
-    const newSocket = io(SOCKET_URL);
+    // Fetch and set the current gang
+    // const fetchedGang = useSelector(state => state.gangs.gangs).find(g => g.gangId === gangId);
+    // console.log("Fetched gang",fetchedGang);
+    // setGang(fetchedGang);
 
-    newSocket.on('connect', () => {
-      showToast(
-        'success',
-        'Connected!',
-        'You are now connected to the server.',
-      );
-      joinRoom(newSocket);
-    });
-
-    newSocket.on('connect_error', () => {
-      showToast(
-        'error',
-        'Connection Error',
-        'Unable to connect to the server.',
-      );
-    });
-
-    newSocket.on('joined', data => {
-      console.log(data);
-    });
-
-    newSocket.on('receive_message', data => {
-      setMessages(prevMessages => {
-        // Ensure the new message isn't already in the list
-        if (!prevMessages.some(message => message.id === data.id)) {
-          // If it's not, add it to the list and return the updated list
-          return [...prevMessages, data];
-        }
-    
-        // If it is, just return the existing list
-        return prevMessages;
-      });
-    
-      // Save the new message to Realm
-      storeMessageToRealm(data);
-    });
-
-    setSocket(newSocket);
-
-    // Cleanup on unmount
-    return () => {
-      newSocket.off('joined');
-      newSocket.off('receive_message');
-      newSocket.close();
-    };
-  }, []);
-
-  function joinRoom(socketInstance) {
+    // Join the room
     const payload = {
       name: user.name,
       phone: user.phone,
       room: gangId,
     };
-    socketInstance.emit('join', payload);
-  }
+    socketService.joinRoom(payload);
 
-  useLayoutEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      socketService.leaveRoom(payload);
+    };
+  }, [gangId, user]);
+
+  useEffect(() => {
+    // Set up navigation options
     if (gang) {
       navigation.setOptions({
         headerTitle: () => <ChatPageHeaderTitle gang={gang} user={user} />,
         headerRight: () => <ChatPageHeaderRight />,
-        headerStyle: {
-          backgroundColor: colors.primary_color,
-        },
+        headerStyle: { backgroundColor: colors.primary_color },
       });
     }
   }, [navigation, gang]);
 
   function handleSendMessage(data) {
-    if (socket) {
-      data.gangId = gangId;
-      socket.emit('message', data);
-    }
+    // Construct message data
+    const messageData = { ...data, gangId, userId: user.id }; // Add other necessary fields
+
+    // Dispatch an action to add the message to Redux
+    dispatch(addMessage(gangId, messageData));
+
+    // Save the message to Realm
+    // storeMessageToRealm(messageData);
+
+    // Emit the message over the socket
+    socketService.emit('message', messageData);
   }
 
   function storeMessageToRealm(data) {
@@ -133,14 +99,8 @@ const GangChatScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {gang ? (
-        <>
-          <GangChatContainer messages={messages} phone={user.phone} />
-          <ChatInput onSendMessage={handleSendMessage} user={user} />
-        </>
-      ) : (
-        <Text>Loading...</Text>
-      )}
+      <GangChatContainer messages={messages} phone={user.phone} />
+      <ChatInput onSendMessage={handleSendMessage} user={user} />
     </SafeAreaView>
   );
 };

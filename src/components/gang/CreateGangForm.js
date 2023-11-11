@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { fonts } from '../../theme/fonts';
 import { postData } from '../../utils/api/api';
 import { showToast } from '../ui/Toast';
-import { realm } from '../../utils/models/relamConfig';
+import { realm } from '../../utils/realm/models/relamConfig';
 import Realm from "realm";
 import { useNavigation } from '@react-navigation/native';
 
