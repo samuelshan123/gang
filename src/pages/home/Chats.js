@@ -1,13 +1,6 @@
 import React from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 
-const DATA = [
-  { id: '1', userName: 'Alice', lastMessage: 'Hey, how are you?', date: '15:30' },
-  { id: '2', userName: 'Bob', lastMessage: 'Lets catch up!', date: '14:45' },
-  { id: '3', userName: 'Charlie', lastMessage: 'Check this out!', date: 'Yesterday' },
-  // ... Add more chat data as needed
-];
-
 const Chats = () => {
   const renderItem = ({ item }) => {
     return (
