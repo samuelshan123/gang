@@ -9,6 +9,7 @@ import ChatPageHeaderRight from '../../components/gang/ChatPage/ChatPageHeaderRi
 import Realm from 'realm';
 import { realm } from '../../utils/realm/models/relamConfig';
 import socketService from '../../utils/service/socketService';
+import { addMessage } from '../../utils/redux/actions/gangActions';
 
 const GangChatScreen = ({ route, navigation }) => {
   const gangId = route.params.gang_id;
@@ -16,9 +17,10 @@ const GangChatScreen = ({ route, navigation }) => {
   const [gang, setGang] = useState(null);
   const gangs = useSelector(state => state.gangs.gangs);
   const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(gangs);
+    // console.log(gangs);
     const fetchedGang = gangs.find(g => g.gang_id === gangId);
     setGang(fetchedGang);
   }, [gangId, gangs]);

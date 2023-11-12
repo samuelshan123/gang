@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import { SOCKET_URL } from '../constants/constants';
 import { insertGangMessage } from '../realm/crud-manager/insert';
+import { updateMessageLastUpdated } from '../realm/crud-manager/updateMessageEpoch';
 
 class SocketService {
   static instance = null;
@@ -31,7 +32,7 @@ class SocketService {
       // Check if the message is not for the current room
       if (!this.currentRoom || this.currentRoom !== data.gangId) {
         // Handle global messages
-        console.log('Global message:', data);
+        // console.log('Global message:', data);
       }
     });
   }
@@ -64,6 +65,7 @@ class SocketService {
         console.log('Room-specific message:', data);
         this.dispatch && this.dispatch(addMessage(data.gangId, data.message));
         insertGangMessage(data);
+        updateMessageLastUpdated(data);
       }
     });
   }
