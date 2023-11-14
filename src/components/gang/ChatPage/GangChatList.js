@@ -1,26 +1,33 @@
-import React, { useRef } from 'react';
-import { View,StyleSheet, FlatList } from 'react-native';
+import React, { memo, useCallback, useState } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import GangMessageList from './GangMessageList';
 
+const GangMessageListItem = memo(({ item, phone }) => (
+  <GangMessageList item={item} phone={phone} />
+));
 
-const GangChatList = ({messages,phone}) => {
-  const flatListRef = useRef(); // Create a ref for the FlatList
+const GangChatList = ({ messages, phone, loadOlderMessages }) => {
+  const [isScrolling, setIsScrolling] = useState(false);
 
-    function GangMessageUI(itemData){
-        return(
-            <GangMessageList item={itemData.item} phone={phone}/>
-        )
-    }
+  const renderMessage = useCallback(({ item }) => (
+    <GangMessageListItem item={item} phone={phone} />
+  ), [phone]);
+
   return (
     <View style={styles.container}>
       <FlatList
-        ref={flatListRef} // Attach the ref to the FlatList
-        data={messages}
-        keyExtractor={(item) => item.id}
-        renderItem={GangMessageUI}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-        onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
-        />
+        data={messages.slice().reverse()}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderMessage}
+        inverted
+        onEndReached={loadOlderMessages}
+        onEndReachedThreshold={0.5}
+        initialNumToRender={15}
+        showsVerticalScrollIndicator={isScrolling}
+        onScrollBeginDrag={() => setIsScrolling(true)}
+        onScrollEndDrag={() => setIsScrolling(false)}
+        // Consider using onMomentumScrollBegin and onMomentumScrollEnd for smoother experience
+      />
     </View>
   );
 };
@@ -28,7 +35,7 @@ const GangChatList = ({messages,phone}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:15
+    padding: 15,
   }
 });
 

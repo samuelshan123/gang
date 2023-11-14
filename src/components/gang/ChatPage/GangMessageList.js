@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#888',
     paddingLeft: 5,
-    fontFamily: fonts.primary,
+    fontFamily: fonts.primary
   },
 });
 
