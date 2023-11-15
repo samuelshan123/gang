@@ -11,9 +11,23 @@ export const GangSchema = {
     epoch: 'int',
     members: 'Member[]',
     created_by: 'string',
-    unread_count:'int'
+    unread_count:'int',
+    last_message: 'LastMessageInfo'
   },
   primaryKey: 'gang_id',
+};
+
+export const LastMessageInfoSchema = {
+  name: 'LastMessageInfo',
+  properties: {
+      id: 'string?',
+      content: 'string?',
+      contentType: 'string?',
+      senderName: 'string?',
+      senderPhone: 'string?',
+      gangId: 'string?',
+      epoch:'int?'
+  },
 };
 
 export const MemberSchema = {

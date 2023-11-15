@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { colors } from "./src/theme/colors";
 import { fonts } from "./src/theme/fonts";
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator,CardStyleInterpolators} from '@react-navigation/stack';
 import Login from './src/pages/auth/Login';
 import GangBottomNavigation from './src/bottom-nav/GangBottomNavigation';
 import GangChatScreen from './src/pages/gangs/GangChatScreen';
@@ -26,6 +26,7 @@ export function AppNavigator(): JSX.Element {
         headerBackTitleStyle: {
           fontFamily: fonts.primary,
         },
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // This line adds the horizontal transition
         // contentStyle:{backgroundColor:'black'}
       };
     

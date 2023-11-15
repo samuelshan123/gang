@@ -1,48 +1,49 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Avatar} from 'react-native-paper';
-import {fonts} from '../../../theme/fonts';
-import {colors} from '../../../theme/colors';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Avatar } from 'react-native-paper';
+import { fonts } from '../../../theme/fonts';
+import { colors } from '../../../theme/colors';
 
-const GangMessageList = ({item, phone}) => {
-  function convertTime(epoch) {
+const GangMessageList = ({ item, phone }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const isSender = item.senderPhone === phone;
+  const MAX_LENGTH = 600; // Set a limit for when to show "Read More"
+  const shouldShowReadMore = item.content.length > MAX_LENGTH && !isExpanded;
+
+  const convertTime = (epoch) => {
     return new Date(epoch).toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
     });
-  }
-
-  // Determine message alignment based on phone number
-  const isSender = item.senderPhone === phone;
+  };
 
   return (
     <View style={isSender ? styles.rightMsgContainer : styles.leftMsgContainer}>
-      {!isSender &&
-        (item.avatar ? (
-          <Avatar.Image
-            size={25}
-            source={{uri: item.avatar}}
-            style={styles.avatar}
-          />
-        ) : (
-          <Avatar.Text
-            size={25}
-            labelStyle={styles.avatarText}
-            label={item.senderName.charAt(0)}
-            style={styles.avatar}
-          />
-        ))}
+      {!isSender && (item.avatar ? (
+        <Avatar.Image size={25} source={{uri: item.avatar}} style={styles.avatar} />
+      ) : (
+        <Avatar.Text size={25} labelStyle={styles.avatarText} label={item.senderName.charAt(0)} style={styles.avatar} />
+      ))}
 
       <View style={isSender ? styles.rightMsg : styles.leftMsg}>
         {!isSender && <Text style={styles.senderName}>{item.senderName}</Text>}
         <View style={styles.messageContent}>
-          <Text style={styles.msgText}>{item.content}</Text>
+          <Text style={styles.msgText} numberOfLines={isExpanded ? undefined : 15}>
+            {item.content}
+          </Text>
+          {shouldShowReadMore && (
+            <TouchableOpacity style={{textAlign:'right'}} onPress={() => setIsExpanded(true)}>
+              <Text style={styles.readMoreText}>Read More</Text>
+            </TouchableOpacity>
+          )}
           <Text style={styles.timeText}>{convertTime(item.epoch)}</Text>
         </View>
       </View>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   leftMsgContainer: {
@@ -71,21 +72,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     position: 'relative',
   },
-  triangle: {
-    position: 'absolute',
-    top: 0,
-    left: -10,
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderRightWidth: 10,
-    borderRightColor: 'white',
-    borderTopWidth: 10,
-    borderTopColor: 'transparent',
-    borderBottomWidth: 10,
-    borderBottomColor: 'transparent',
-  },
   rightMsg: {
     padding: 8,
     backgroundColor: '#DCF8C7',
@@ -104,19 +90,23 @@ const styles = StyleSheet.create({
     marginBottom: 1,
     fontFamily: fonts.primary,
   },
-  checkIcon: {
-    marginLeft: 5,
-  },
   messageContent: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     flexWrap: 'wrap',
   },
+  readMoreText: {
+    color: '#027eb5',
+    fontFamily: fonts.primary,
+    fontSize: 12,
+    marginTop: 5,
+    textAlign:'right'
+  },
   timeText: {
     fontSize: 10,
     color: '#888',
     paddingLeft: 5,
-    fontFamily: fonts.primary
+    fontFamily: fonts.primary,
   },
 });
 

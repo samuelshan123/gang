@@ -45,11 +45,6 @@ const GangChatScreen = ({ route, navigation }) => {
 
 
   useEffect(() => {
-    // Fetch and set the current gang
-    // const fetchedGang = useSelector(state => state.gangs.gangs).find(g => g.gangId === gangId);
-    // console.log("Fetched gang",fetchedGang);
-    // setGang(fetchedGang);
-
     // Join the room
     const payload = {
       name: user.name,
@@ -64,7 +59,7 @@ const GangChatScreen = ({ route, navigation }) => {
     };
   }, [gangId, user]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Set up navigation options
     if (gang) {
       navigation.setOptions({
@@ -78,26 +73,20 @@ const GangChatScreen = ({ route, navigation }) => {
   function handleSendMessage(data) {
     // Construct message data
     const messageData = { ...data, gangId, userId: user.id }; // Add other necessary fields
-
     // Dispatch an action to add the message to Redux
     dispatch(addMessage(gangId, messageData));
-
-    // Save the message to Realm
-    // storeMessageToRealm(messageData);
-
-    // Emit the message over the socket
     socketService.emit('message', messageData);
   }
 
-  function storeMessageToRealm(data) {
-    try {
-      realm.write(() => {
-        realm.create('GangMessage', data, Realm.UpdateMode.Modified);
-      });
-    } catch (error) {
-      console.error('Error storing message to Realm:', error);
-    }
-  }
+  // function storeMessageToRealm(data) {
+  //   try {
+  //     realm.write(() => {
+  //       realm.create('GangMessage', data, Realm.UpdateMode.Modified);
+  //     });
+  //   } catch (error) {
+  //     console.error('Error storing message to Realm:', error);
+  //   }
+  // }
 
   return (
     <SafeAreaView style={styles.container}>

@@ -20,11 +20,12 @@ const Chats = () => {
   };
 
   return (
-    <FlatList
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    // <FlatList
+    //   data={DATA}
+    //   renderItem={renderItem}
+    //   keyExtractor={(item) => item.id}
+    // />
+    <></>
   );
 };
 

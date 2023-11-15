@@ -9,6 +9,27 @@ import { colors } from '../../theme/colors';
 const GangListTile = ({ item }) => {
   const navigation = useNavigation();
 
+  const formatDate = (epoch) => {
+    const messageDate = new Date(epoch); // Convert epoch to milliseconds
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+  
+    // Check if the message date is today
+    if (messageDate >= currentDate) {
+      return 'Today';
+    }
+  
+    // Check if the message date was yesterday
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (messageDate >= yesterday) {
+      return 'Yesterday';
+    }
+  
+    // Otherwise, return the actual date
+    return messageDate.toLocaleDateString();
+  };
+
   function navigateToChat() {
     realm.write(() => {
       let gang = realm.objectForPrimaryKey('Gang', item.gang_id);
@@ -29,10 +50,10 @@ const GangListTile = ({ item }) => {
         <View style={styles.textContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.gang}>{item.gang_name}</Text>
-            {/* <Text style={styles.date}>{'today'}</Text>  */}
+            <Text style={styles.date}>{formatDate(item.last_message?.epoch)}</Text> 
           </View>
           <View style={styles.messageContainer}>
-            <Text style={styles.message}>{item.description}</Text>
+            <Text style={styles.message}>{item.last_message?.senderName}: {item.last_message?.content}</Text>
             {item?.unread_count!=0 &&
             <Badge style={styles.badge}>{item.unread_count}</Badge>}
           </View>
@@ -82,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   message: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'gray',
     fontFamily: fonts.primary
   },
