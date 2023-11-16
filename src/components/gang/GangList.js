@@ -2,11 +2,11 @@ import React from 'react';
 import {FlatList} from 'react-native';
 import GangListTile from './GangListTile';
 
-const GangList = ({gangList}) => {
+const GangList = ({gangList,phone}) => {
 //  console.log(gangList);
   function listUI(itemData) {
     return (
-      <GangListTile item={itemData.item} />
+      <GangListTile item={itemData.item} phone={phone} />
     );
   }
   return (

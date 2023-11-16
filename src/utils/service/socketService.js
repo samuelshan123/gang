@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { SOCKET_URL } from '../constants/constants';
 import { insertGangMessage } from '../realm/crud-manager/insert';
 import { updateMessageLastUpdated } from '../realm/crud-manager/updateMessageEpoch';
-import { updateUnreadMessageCount } from '../realm/crud-manager/updateMessageCount';
+import { updateUnreadMessage, updateUnreadMessageCount } from '../realm/crud-manager/updateMessageCount';
 
 class SocketService {
   static instance = null;
@@ -71,6 +71,7 @@ class SocketService {
         this.dispatch && this.dispatch(addMessage(data.gangId, data.message));
         insertGangMessage(data);
         updateMessageLastUpdated(data);
+        updateUnreadMessage(data);
       }
     });
   }

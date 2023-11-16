@@ -180,7 +180,7 @@ const Gangs = () => {
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1}}>
         {/* Use realmGangs instead of gangList */}
-        <GangList gangList={realmGangs} />
+        <GangList gangList={realmGangs} phone={user.phone} />
       </View>
 
       <FAB.Group

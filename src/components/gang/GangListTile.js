@@ -6,7 +6,7 @@ import { fonts } from '../../theme/fonts';
 import { realm } from '../../utils/realm/models/relamConfig';
 import { colors } from '../../theme/colors';
 
-const GangListTile = ({ item }) => {
+const GangListTile = ({ item ,phone }) => {
   const navigation = useNavigation();
 
   const formatDate = (epoch) => {
@@ -53,7 +53,7 @@ const GangListTile = ({ item }) => {
             <Text style={styles.date}>{formatDate(item.last_message?.epoch)}</Text> 
           </View>
           <View style={styles.messageContainer}>
-            <Text style={styles.message}>{item.last_message?.senderName}: {item.last_message?.content}</Text>
+            <Text style={styles.message}>{phone === item.last_message?.senderPhone ? 'You': item.last_message?.senderName}: {item.last_message?.content}</Text>
             {item?.unread_count!=0 &&
             <Badge style={styles.badge}>{item.unread_count}</Badge>}
           </View>
