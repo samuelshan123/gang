@@ -1,10 +1,13 @@
 import { Avatar } from 'react-native-paper';
 import { fonts } from "../../../theme/fonts";
 import { colors } from "../../../theme/colors";
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
 function ChatPageHeaderTitle({gang,user}){
+
+   const navigation = useNavigation();
 
     const participants = gang.members
     .map(member => {
@@ -13,6 +16,10 @@ function ChatPageHeaderTitle({gang,user}){
     .join(', ');
 
   return(
+    <TouchableOpacity   onPress={() => {
+      // Navigate to the info page
+      navigation.navigate('Gang Info',{gang});
+    }}>
     <View style={styles.headerContainer}>
     <Avatar.Text
       size={35}
@@ -24,6 +31,7 @@ function ChatPageHeaderTitle({gang,user}){
       <Text style={styles.headerDescription}>{participants}</Text>
     </View>
   </View>
+  </TouchableOpacity>
   )
 }
 

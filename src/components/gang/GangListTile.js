@@ -16,7 +16,7 @@ const GangListTile = ({ item ,phone }) => {
   
     // Check if the message date is today
     if (messageDate >= currentDate) {
-      return 'Today';
+      return messageDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     }
   
     // Check if the message date was yesterday
