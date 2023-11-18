@@ -8,7 +8,7 @@ export default function GetGangCodeOrQR({route}) {
 
   const code = route.params.gang_id
   const handleCopyCode = () => {
-    Clipboard.setString(digitCode);
+    Clipboard.setString(code);
     // Optionally, you can add feedback to the user (like a toast) to confirm the copy action
   };
 
