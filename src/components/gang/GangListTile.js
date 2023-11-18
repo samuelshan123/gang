@@ -53,7 +53,7 @@ const GangListTile = ({ item ,phone }) => {
             <Text style={styles.date}>{formatDate(item.last_message?.epoch)}</Text> 
           </View>
           <View style={styles.messageContainer}>
-            <Text style={styles.message}>{phone === item.last_message?.senderPhone ? 'You': item.last_message?.senderName}: {item.last_message?.content}</Text>
+           {item?.last_message?.senderPhone && <Text style={styles.message}>{phone === item.last_message?.senderPhone ? 'You': item.last_message?.senderName}: {item.last_message?.content}</Text>}
             {item?.unread_count!=0 &&
             <Badge style={styles.badge}>{item.unread_count}</Badge>}
           </View>

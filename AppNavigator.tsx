@@ -12,6 +12,7 @@ import JoinGang from "./src/pages/gangs/JoinGang";
 import { View, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Use your preferred icon set
 import GangInfo from "./src/components/gang/gang-settings/GangInfo";
+import GetGangCodeOrQR from "./src/components/gang/gang-settings/GetGangCodeOrQR";
 
 const Stack = createStackNavigator();
 
@@ -94,6 +95,7 @@ export function AppNavigator(): JSX.Element {
         <Stack.Screen name="GangChat" component={GangChatScreen} />
         <Stack.Screen name="Create Gang" component={CreateGang} />
         <Stack.Screen name="Gang Info" component={GangInfo} />
+        <Stack.Screen name="Gang Code" component={GetGangCodeOrQR} />
 
       </Stack.Navigator>
     );
