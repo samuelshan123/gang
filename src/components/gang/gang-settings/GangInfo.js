@@ -21,6 +21,8 @@ function GangInfo({ route }) {
   const handleExitGroup = () => {
     console.log('Exiting Group...');
     // Implement group exit logic here
+    navigation.navigate('Home') 
+
   };
 
   const getQrCodeOrCode = () => {

@@ -12,6 +12,7 @@ export const GangSchema = {
     members: 'Member[]',
     created_by: 'string',
     unread_count:'int',
+    is_notification_subscribed:{ type: 'bool', default: false },
     last_message: 'LastMessageInfo'
   },
   primaryKey: 'gang_id',

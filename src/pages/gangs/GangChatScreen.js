@@ -6,10 +6,10 @@ import { colors } from '../../theme/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import ChatPageHeaderTitle from '../../components/gang/ChatPage/ChatPageHeaderTitle';
 import ChatPageHeaderRight from '../../components/gang/ChatPage/ChatPageHeaderRight';
-import Realm from 'realm';
 import { realm } from '../../utils/realm/models/relamConfig';
 import socketService from '../../utils/service/socketService';
 import { addMessage } from '../../utils/redux/actions/gangActions';
+import { subscribeToNotification } from '../../utils/push-notification/subscribeTopic';
 
 const GangChatScreen = ({ route, navigation }) => {
   const gangId = route.params.gang_id;
@@ -24,6 +24,26 @@ const GangChatScreen = ({ route, navigation }) => {
     const fetchedGang = gangs.find(g => g.gang_id === gangId);
     setGang(fetchedGang);
   }, [gangId, gangs]);
+
+  console.log('====================================');
+  console.log(gang);
+  console.log('====================================');
+// useEffect(()=>{
+//   if(!gang?.is_notification_subscribed){
+//     subscribeToNotification(gang);
+//   }
+// })
+  useLayoutEffect(() => {
+    // Set up navigation options
+    if (gang) {
+      navigation.setOptions({
+        headerTitle: () => <ChatPageHeaderTitle gang={gang} user={user} />,
+        headerRight: () => <ChatPageHeaderRight gang={gang} user={user} />,
+        headerStyle: { backgroundColor: colors.primary_color },
+      });
+    }
+  }, [navigation, gang]);
+
 
   useEffect(() => {
     // Load messages from the Realm database
@@ -59,34 +79,13 @@ const GangChatScreen = ({ route, navigation }) => {
     };
   }, [gangId, user]);
 
-  useLayoutEffect(() => {
-    // Set up navigation options
-    if (gang) {
-      navigation.setOptions({
-        headerTitle: () => <ChatPageHeaderTitle gang={gang} user={user} />,
-        headerRight: () => <ChatPageHeaderRight />,
-        headerStyle: { backgroundColor: colors.primary_color },
-      });
-    }
-  }, [navigation, gang]);
-
   function handleSendMessage(data) {
     // Construct message data
-    const messageData = { ...data, gangId, userId: user.id }; // Add other necessary fields
+    const messageData = { ...data, gangId, userId: user.id };
     // Dispatch an action to add the message to Redux
     dispatch(addMessage(gangId, messageData));
     socketService.emit('message', messageData);
   }
-
-  // function storeMessageToRealm(data) {
-  //   try {
-  //     realm.write(() => {
-  //       realm.create('GangMessage', data, Realm.UpdateMode.Modified);
-  //     });
-  //   } catch (error) {
-  //     console.error('Error storing message to Realm:', error);
-  //   }
-  // }
 
   return (
     <SafeAreaView style={styles.container}>
