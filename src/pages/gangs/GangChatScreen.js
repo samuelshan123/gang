@@ -25,9 +25,6 @@ const GangChatScreen = ({ route, navigation }) => {
     setGang(fetchedGang);
   }, [gangId, gangs]);
 
-  console.log('====================================');
-  console.log(gang);
-  console.log('====================================');
 // useEffect(()=>{
 //   if(!gang?.is_notification_subscribed){
 //     subscribeToNotification(gang);
