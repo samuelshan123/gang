@@ -8,8 +8,7 @@ export const subscribeToNotification = async (gangData) => {
       await messaging().subscribeToTopic(gangData.gang_id);
 
       // Get the gang object from Realm
-      const gangToUpdate = realm.objectForPrimaryKey('Gang', gangData.gang_id);
-      // Update the Realm database
+      const gangToUpdate = realm.objectForPrimaryKey('Gang', gangData.gang_id);;    
       if (gangToUpdate) {
         realm.write(() => {
           gangToUpdate.is_notification_subscribed = true;

@@ -41,19 +41,19 @@ const Gangs = () => {
     NotificationListener();
   }, []);
 
-  useEffect(() => {
-    // Set up global Socket.io event listeners
-    // Example: Handling global notifications
-    socketService.on('global_notification', notification => {
-      // Process the notification
-      console.log(notification);
-    });
+  // useEffect(() => {
+  //   // Set up global Socket.io event listeners
+  //   // Example: Handling global notifications
+  //   socketService.on('global_notification', notification => {
+  //     // Process the notification
+  //     console.log(notification);
+  //   });
 
-    return () => {
-      // Cleanup global listeners when the component unmounts
-      socketService.off('global_notification');
-    };
-  }, []);
+  //   return () => {
+  //     // Cleanup global listeners when the component unmounts
+  //     socketService.off('global_notification');
+  //   };
+  // }, []);
 
   useEffect(() => {
     const gangs = fetchGangsFromRealm();

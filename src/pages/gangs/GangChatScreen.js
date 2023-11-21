@@ -25,11 +25,7 @@ const GangChatScreen = ({ route, navigation }) => {
     setGang(fetchedGang);
   }, [gangId, gangs]);
 
-// useEffect(()=>{
-//   if(!gang?.is_notification_subscribed){
-//     subscribeToNotification(gang);
-//   }
-// })
+
   useLayoutEffect(() => {
     // Set up navigation options
     if (gang) {
@@ -39,6 +35,9 @@ const GangChatScreen = ({ route, navigation }) => {
         headerStyle: { backgroundColor: colors.primary_color },
       });
     }
+    // else{
+
+    // }
   }, [navigation, gang]);
 
 
@@ -59,6 +58,12 @@ const GangChatScreen = ({ route, navigation }) => {
       storedMessages.removeAllListeners();
     };
   }, [gangId]);
+
+  // useEffect(() => {
+  //   if(!gang?.is_notification_subscribed){
+  //     subscribeToNotification(gang);
+  //   }
+  // }, [gang?.is_notification_subscribed, gang?.gang_id]);
 
 
   useEffect(() => {
