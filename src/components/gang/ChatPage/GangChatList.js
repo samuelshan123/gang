@@ -2,16 +2,15 @@ import React, { memo, useCallback, useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import GangMessageList from './GangMessageList';
 
-const GangMessageListItem = memo(({ item, phone }) => (
-  <GangMessageList item={item} phone={phone} />
+const GangMessageListItem = memo(({ item, phone ,onSwipe }) => (
+  <GangMessageList item={item} phone={phone} onSwipe={onSwipe} />
 ));
 
-const GangChatList = ({ messages, phone, loadOlderMessages }) => {
+const GangChatList = ({ messages, phone, loadOlderMessages ,onSwipe }) => {
   const [isScrolling, setIsScrolling] = useState(false);
-
   const renderMessage = useCallback(({ item }) => (
-    <GangMessageListItem item={item} phone={phone} />
-  ), [phone]);
+    <GangMessageListItem item={item} phone={phone} onSwipe={onSwipe} />
+  ), [phone,onSwipe]);
 
   return (
     <View style={styles.container}>

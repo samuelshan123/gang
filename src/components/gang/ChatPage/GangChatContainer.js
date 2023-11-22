@@ -5,11 +5,11 @@ import GangChatList from "./GangChatList";
 
 
 
-function GangChatContainer({messages,phone}){
+function GangChatContainer({messages,phone ,onSwipe}){
 
     return(
         <View style={styles.container}>
-           <GangChatList messages={messages} phone={phone}/>
+           <GangChatList messages={messages} phone={phone} onSwipe={onSwipe}/>
         </View>
     )
 
